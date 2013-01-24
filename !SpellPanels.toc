@@ -1,7 +1,7 @@
 ## Interface: 50100
 ## Title: Spell Panels
 ## Author: Choonster
-## Version: 1.00
+## Version: 0.01
 ## Notes: Provides a framework for showing kgPanels (or other frames) when you cast spells.
 
 core.lua
