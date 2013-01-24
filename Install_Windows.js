@@ -1,4 +1,7 @@
+// The path to WoW
 var wowPath = "C:\\Users\\Public\\Games\\World of Warcraft"
+
+// Where to save the downloaded ZIP. The ZIP will be extracted to a folder of the same name (minus the extension) before being copied to your AddOns folder.
 var zipPath = "C:\\Users\\Bob\\Downloads\\SpellPanels_latest.zip"
 
 // -------------
