@@ -69,9 +69,9 @@ function SpellPanel:FadeOut_OnFinished()
 	self.parent:Hide()
 end
 
-function SpellPanel_OnLoad(self, spell, delayTime, fadeTime)
-	if self.isSpellPanel then return end
-	self.isSpellPanel = true
+function SpellPanel_OnLoad(frame, spell, delayTime, fadeTime)
+	if frame.isSpellPanel then return end
+	frame.isSpellPanel = true
 	
 	local spellType = type(spell)
 	if spellType ~= "string" and spellType ~= "number" then
@@ -79,18 +79,18 @@ function SpellPanel_OnLoad(self, spell, delayTime, fadeTime)
 	end
 	
 	-- Starts the fade delayTime seconds after the panel is shown
-	local delay = self:CreateAnimationGroup()
-	delay:SetScript("OnFinished", SpellPanel_Delay_OnFinished)
-	self.delay = delay
+	local delay = frame:CreateAnimationGroup()
+	delay:SetScript("OnFinished", SpellPanel.Delay_OnFinished)
+	frame.delay = delay
 	
 	local delayAnim = delay:CreateAnimation("Animation")
 	delayAnim:SetDuration(delayTime or DEFAULT_DELAY)
 	delay.anim = delayAnim
 	
 	-- Fades the panel out over fadeTime seconds
-	local fadeOut = self:CreateAnimationGroup()
-	fadeOut:SetScript("OnFinished", SpellPanel_FadeOut_OnFinished)
-	self.fadeOut = fadeOut
+	local fadeOut = frame:CreateAnimationGroup()
+	fadeOut:SetScript("OnFinished", SpellPanel.FadeOut_OnFinished)
+	frame.fadeOut = fadeOut
 	
 	local fadeOutAnim = fadeOut:CreateAnimation("Alpha")
 	fadeOutAnim:SetDuration(fadeTime or DEFAULT_FADE)
@@ -98,12 +98,14 @@ function SpellPanel_OnLoad(self, spell, delayTime, fadeTime)
 	fadeOut.anim = fadeOutAnim
 	
 	-- These references make the OnFinished scripts slightly faster by avoiding the need to call :GetRegionParent()
-	fadeOut.parent = self
+	fadeOut.parent = frame
 	delay.fadeOut = fadeOut
 	
-	-- Set the OnShow/OnHide scripts:
-	self:SetScript("OnShow", SpellPanel_OnShow)
-	-- self:SetScript("OnHide", SpellPanel_OnHide)
+	frame.HideOrFade = SpellPanel.HideOrFade
 	
-	_G["SpellPanel_" .. spell] = self
+	-- Set the OnShow/OnHide scripts:
+	frame:SetScript("OnShow", SpellPanel.OnShow)
+	-- frame:SetScript("OnHide", SpellPanel.OnHide)
+	
+	_G["SpellPanel_" .. spell] = frame
 end
