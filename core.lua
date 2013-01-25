@@ -69,7 +69,7 @@ function SpellPanel:FadeOut_OnFinished()
 	self.parent:Hide()
 end
 
-function SpellPanel_OnLoad(frame, spell, delayTime, fadeTime)
+function SpellPanel_OnLoad(frame, spell, delayTime, fadeTime, fade)
 	if frame.isSpellPanel then return end
 	frame.isSpellPanel = true
 	
@@ -102,6 +102,9 @@ function SpellPanel_OnLoad(frame, spell, delayTime, fadeTime)
 	delay.fadeOut = fadeOut
 	
 	frame.HideOrFade = SpellPanel.HideOrFade
+	
+	-- If the fade paramater wasn't specified, default to true
+	frame.fade = (fade == nil) and true or fade
 	
 	-- Set the OnShow/OnHide scripts:
 	frame:SetScript("OnShow", SpellPanel.OnShow)
