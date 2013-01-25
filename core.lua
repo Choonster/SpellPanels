@@ -6,6 +6,8 @@ local DEFAULT_FADE  = 0.5 -- The number of seconds that the frame is faded out o
 -- END OF CONFIG --
 -------------------
 
+local SPELL_PANELS = {}
+
 local CURRENT_PANEL;
 local PLAYER_GUID;
 
@@ -26,7 +28,7 @@ function frame:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceG
 	if event == "SPELL_CAST_START" or event == "SPELL_CAST_SUCCESS" then
 		local spellID, spellName, spellSchool = ...
 		
-		local panel = _G["SpellPanel_" .. spellID] or _G["SpellPanel_" .. spellName] -- Allow SpellPanel-116 or SpellPanel-Frostbolt
+		local panel = SPELL_PANELS[spellID] or SPELL_PANELS[spellName]
 		if panel then
 			if CURRENT_PANEL then
 				CURRENT_PANEL:HideOrFade()
@@ -69,7 +71,7 @@ function SpellPanel:FadeOut_OnFinished()
 	self.parent:Hide()
 end
 
-function SpellPanel_OnLoad(frame, spell, delayTime, fadeTime, fade)
+function SpellPanel_OnLoad(frame, spell, delayTime, fade, fadeTime)
 	if frame.isSpellPanel then return end
 	frame.isSpellPanel = true
 	
@@ -107,8 +109,9 @@ function SpellPanel_OnLoad(frame, spell, delayTime, fadeTime, fade)
 	frame.fade = (fade == nil) and true or fade
 	
 	-- Set the OnShow/OnHide scripts:
-	frame:SetScript("OnShow", SpellPanel.OnShow)
-	-- frame:SetScript("OnHide", SpellPanel.OnHide)
+	frame:HookScript("OnShow", SpellPanel.OnShow)
+	-- frame:HookScript("OnHide", SpellPanel.OnHide)
 	
 	_G["SpellPanel_" .. spell] = frame
+	SPELL_PANELS[spell] = frame
 end
