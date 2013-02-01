@@ -21,7 +21,7 @@ end)
 function frame:PLAYER_ENTERING_WORLD()
 	PLAYER_GUID = UnitGUID("player")
 	
-	self:UnreigsterEvent("PLAYER_ENTERING_WORLD")
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 end
 
 function frame:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
